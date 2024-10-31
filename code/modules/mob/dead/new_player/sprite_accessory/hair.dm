@@ -902,7 +902,7 @@
 	name = "Kobeni (Alt)"
 	icon_state = "kobeni_2"
 
-/datum/sprite_accessory/hair/head/wig_1
+/datum/sprite_accessory/hair/head/wig1
 	name = "Wig (1)"
 	icon_state = "wig1"
 
