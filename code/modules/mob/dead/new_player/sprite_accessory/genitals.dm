@@ -2,7 +2,7 @@
 	icon = 'icons/mob/sprite_accessory/genitals/penis.dmi'
 	color_keys = 2
 	color_key_names = list("Member", "Skin")
-	relevant_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER) //Vrell - Yes I know this is hacky but it works for now
+	relevant_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER, BODY_FRONT_SECOND_LAYER)
 
 /datum/sprite_accessory/penis/adjust_appearance_list(list/appearance_list, obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
 	generic_gender_feature_adjust(appearance_list, organ, bodypart, owner, OFFSET_BELT, OFFSET_BELT_F)
@@ -21,10 +21,19 @@
 					return "slit_1"
 				else
 					return "slit_2"
+					
 	if(pp.erect_state == ERECT_STATE_HARD)
-		return "[icon_state]_[min(3,pp.penis_size+1)]"
+		return "penis_[icon_state]_[max(1, min(5, pp.penis_size))]_1"
+	if(pp.erect_state == ERECT_STATE_STIFF)
+		return "penis_[icon_state]_[max(1, min(5, pp.penis_size-1))]_1" 
+
+	//Normal penis check for those without a sheath, just hang flaccid with -1 size.
+	else if(pp.sheath_type == SHEATH_TYPE_NONE && pp.erect_state == ERECT_STATE_NONE) 
+		return "penis_[icon_state]_[max(1, min(5, pp.penis_size-1))]_0"
+
+	//Penis should no longer be aroused, and is hidden, transitions with sheath states as well.
 	else
-		return "[icon_state]_[pp.penis_size]"
+		return "blank"
 
 /datum/sprite_accessory/penis/is_visible(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
 	if(owner.underwear)
@@ -42,11 +51,17 @@
 	color_key_defaults = list(null, KEY_CHEST_COLOR)
 	default_colors = list("C52828", null)
 
-/datum/sprite_accessory/penis/knotted2
+/datum/sprite_accessory/penis/thick
+	icon_state = "thick"
+	name = "Thick"
+	color_key_defaults = list(null, KEY_CHEST_COLOR)
+	default_colors = list("C52828", null)
+
+/* /datum/sprite_accessory/penis/knotted2
 	name = "Knotted 2"
 	icon_state = "knotted2"
 	color_key_defaults = list(null, KEY_CHEST_COLOR)
-	default_colors = list("C52828", null)
+	default_colors = list("C52828", null) */ //We won't miss this right?
 
 /datum/sprite_accessory/penis/flared
 	icon_state = "flared"
@@ -88,7 +103,7 @@
 /datum/sprite_accessory/testicles
 	icon = 'icons/mob/sprite_accessory/genitals/testicles.dmi'
 	color_key_name = "Sack"
-	relevant_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER)
+	relevant_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_SECOND_LAYER)
 
 /datum/sprite_accessory/testicles/adjust_appearance_list(list/appearance_list, obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
 	generic_gender_feature_adjust(appearance_list, organ, bodypart, owner, OFFSET_BELT, OFFSET_BELT_F)
@@ -113,7 +128,7 @@
 /datum/sprite_accessory/breasts
 	icon = 'icons/mob/sprite_accessory/genitals/breasts.dmi'
 	color_key_name = "Breasts"
-	relevant_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
+	relevant_layers = list(BODY_BEHIND_LAYER,BODY_FRONT_FIFTH_LAYER)
 
 /datum/sprite_accessory/breasts/get_icon_state(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
 	var/obj/item/organ/breasts/badonkers = organ
@@ -145,7 +160,7 @@
 /datum/sprite_accessory/vagina
 	icon = 'icons/mob/sprite_accessory/genitals/vagina.dmi'
 	color_key_name = "Nethers"
-	relevant_layers = list(BODY_ADJ_LAYER)
+	relevant_layers = list(BODY_FRONT_LAYER)
 
 /datum/sprite_accessory/vagina/adjust_appearance_list(list/appearance_list, obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
 	generic_gender_feature_adjust(appearance_list, organ, bodypart, owner, OFFSET_BELT, OFFSET_BELT_F)
@@ -193,7 +208,7 @@
 /datum/sprite_accessory/belly
 	icon = 'icons/mob/sprite_accessory/genitals/belly.dmi'
 	color_key_name = "Belly"
-	relevant_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
+	relevant_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_FOURTH_LAYER)
 
 /datum/sprite_accessory/belly/get_icon_state(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
 	var/obj/item/organ/belly/belleh = organ
@@ -209,3 +224,30 @@
 	icon_state = "pair"
 	name = "Belly"
 	color_key_defaults = list(KEY_CHEST_COLOR)
+
+/datum/sprite_accessory/butt
+	icon = 'icons/mob/sprite_accessory/genitals/butt.dmi'
+	color_key_name = "Butt"
+	relevant_layers = list(BODY_FRONT_LAYER)
+
+/datum/sprite_accessory/butt/adjust_appearance_list(list/appearance_list, obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
+	if(!isdwarf(owner) && !isgoblinp(owner) && !iskobold(owner) && !isvermin(owner))
+		generic_gender_feature_adjust(appearance_list, organ, bodypart, owner, OFFSET_PANTS, OFFSET_PANTS_F)
+	else
+		generic_gender_feature_adjust(appearance_list, organ, bodypart, owner, OFFSET_BUTT, OFFSET_BUTT)
+/datum/sprite_accessory/butt/get_icon_state(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
+	var/obj/item/organ/butt/buttie = organ
+	return "butt_[icon_state]_[buttie.organ_size]"
+
+/datum/sprite_accessory/butt/is_visible(obj/item/organ/organ, obj/item/bodypart/bodypart, mob/living/carbon/owner)
+	var/obj/item/organ/butt/buttie = organ
+	if(owner.underwear)
+		return FALSE
+	if(!buttie.visible_organ)
+		return FALSE
+	return is_human_part_visible(owner, HIDEJUMPSUIT|HIDECROTCH|HIDEBUTT)
+
+/datum/sprite_accessory/butt/pair
+	name = "Pair"
+	icon_state = "pair"
+	color_key_defaults = list(KEY_SKIN_COLOR)

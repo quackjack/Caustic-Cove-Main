@@ -17,6 +17,8 @@
 	gripsprite = TRUE
 	drop_sound = 'sound/foley/dropsound/wooden_drop.ogg'
 	smeltresult = /obj/item/ingot/iron
+	improvised = TRUE
+
 /datum/intent/flailthresh
 	name = "thresh"
 	icon_state = "inthresh"
@@ -25,6 +27,7 @@
 	candodge = FALSE
 	misscost = 0
 	no_attack = TRUE
+	
 
 /obj/item/rogueweapon/thresher/getonmobprop(tag)
 	. = ..()
@@ -66,6 +69,7 @@
 	slot_flags = ITEM_SLOT_HIP
 	max_blade_int = 50
 	smeltresult = /obj/item/ingot/iron
+	improvised = TRUE
 
 /obj/item/rogueweapon/sickle/getonmobprop(tag)
 	. = ..()
@@ -94,13 +98,14 @@
 	smeltresult = /obj/item/ingot/iron
 	var/hoe_damage = null //the durability damage recieved for every work cycle
 	var/work_time = 3 SECONDS // the time it takes to make new soil or till soil
+	improvised = TRUE
 
 /obj/item/rogueweapon/hoe/stone
 	force = 7
 	force_wielded = 12
 	name = "stone hoe"
 	desc = "A makeshift hoe made out of stone, brittle."
-	icon_state = "stonehoe"
+	icon_state = "hoe"
 	//dropshrink = 0.8
 	smeltresult = null
 	anvilrepair = null

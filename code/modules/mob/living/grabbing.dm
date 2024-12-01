@@ -212,6 +212,13 @@
 	var/mob/living/carbon/C = grabbed
 	var/armor_block = C.run_armor_check(limb_grabbed, "slash")
 	var/damage = user.get_punch_dmg()
+
+	if(limb_grabbed.status == BODYPART_ROBOTIC)
+		if(!C.cmode)
+			C.visible_message(span_notice("[user] twists [limb_grabbed] of [C], popping it out of the socket!"), span_notice("I pop [limb_grabbed] from [src]."))
+			limb_grabbed.drop_limb()
+			return
+
 	playsound(C.loc, "genblunt", 100, FALSE, -1)
 	C.next_attack_msg.Cut()
 	C.apply_damage(damage, BRUTE, limb_grabbed, armor_block)
@@ -449,6 +456,12 @@
 				var/datum/antagonist/zombie/existing_zomble = C.mind?.has_antag_datum(/datum/antagonist/zombie)
 				if(caused_wound?.zombie_infect_attempt() && !existing_zomble)
 					user.mind.adjust_triumphs(1)
+			if(HAS_TRAIT(user, TRAIT_POISONBITE))
+				if(C.reagents)
+					var/poison = user.STACON/2 //more peak species level, more poison
+					C.reagents.add_reagent(/datum/reagent/toxin/venom, poison/2)
+					C.reagents.add_reagent(/datum/reagent/medicine/soporpot, poison)
+					to_chat(user, span_warning("Your fangs inject venom into [C]!"))
 	else
 		C.next_attack_msg += " <span class='warning'>Armor stops the damage.</span>"
 	C.visible_message(span_danger("[user] bites [C]'s [parse_zone(sublimb_grabbed)]![C.next_attack_msg.Join()]"), \
