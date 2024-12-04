@@ -266,3 +266,4 @@
 		icon_state = "pouch1"
 	else
 		icon_state = "pouch0"
+..()
