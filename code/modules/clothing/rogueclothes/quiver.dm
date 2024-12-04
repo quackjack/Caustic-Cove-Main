@@ -245,7 +245,7 @@
 	else
 		to_chat(loc, span_warning("Full!"))
 	return
-..()
+	..()
 
 /obj/item/bulletpouch/attack_right(mob/user)
 	if(bullets.len)
@@ -266,4 +266,3 @@
 		icon_state = "pouch1"
 	else
 		icon_state = "pouch0"
-..()
