@@ -169,6 +169,7 @@
 					C.visible_message(span_danger("[user] [pick("chokes", "strangles")] [C]!"), \
 									span_userdanger("[user] [pick("chokes", "strangles")] me!"), span_hear("I hear a sickening sound of pugilism!"), COMBAT_MESSAGE_RANGE, user)
 					to_chat(user, span_danger("I [pick("choke", "strangle")] [C]!"))
+					user.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.2))
 		if(/datum/intent/grab/twist)
 			if(limb_grabbed && grab_state > 0) //this implies a carbon victim
 				if(iscarbon(M))
