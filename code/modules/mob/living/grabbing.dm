@@ -239,6 +239,7 @@
 	M.visible_message(span_danger("[user] twists [I] in [M]'s wound!"), \
 					span_userdanger("[user] twists [I] in my wound!"), span_hear("I hear a sickening sound of pugilism!"), COMBAT_MESSAGE_RANGE)
 	log_combat(user, M, "itemtwisted [sublimb_grabbed] ")
+	user.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.2))
 
 /obj/item/grabbing/proc/removeembeddeditem(mob/living/user) //implies limb_grabbed and sublimb are things
 	var/mob/living/M = grabbed
@@ -342,6 +343,7 @@
 	to_chat(user, span_warning("I smash [C]'s [limb_grabbed] against [A].[C.next_attack_msg.Join()]"))
 	C.next_attack_msg.Cut()
 	log_combat(user, C, "limbsmashed [limb_grabbed] ")
+	user.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.2))
 
 /datum/intent/grab
 	unarmed = TRUE
