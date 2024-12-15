@@ -162,6 +162,7 @@
 				if(iscarbon(M) && M != user)
 					user.rogfat_add(rand(1,3))
 					var/mob/living/carbon/C = M
+					var/mob/living/wrestler = user
 					if(get_location_accessible(C, BODY_ZONE_PRECISE_NECK))
 						if(prob(25))
 							C.emote("choke")
@@ -169,7 +170,7 @@
 					C.visible_message(span_danger("[user] [pick("chokes", "strangles")] [C]!"), \
 									span_userdanger("[user] [pick("chokes", "strangles")] me!"), span_hear("I hear a sickening sound of pugilism!"), COMBAT_MESSAGE_RANGE, user)
 					to_chat(user, span_danger("I [pick("choke", "strangle")] [C]!"))
-					user.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.2))
+					wrestler.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.5))
 		if(/datum/intent/grab/twist)
 			if(limb_grabbed && grab_state > 0) //this implies a carbon victim
 				if(iscarbon(M))
@@ -213,6 +214,7 @@
 	var/mob/living/carbon/C = grabbed
 	var/armor_block = C.run_armor_check(limb_grabbed, "slash")
 	var/damage = user.get_punch_dmg()
+	var/mob/living/wrestler = user
 
 	if(limb_grabbed.status == BODYPART_ROBOTIC)
 		if(!C.cmode)
@@ -229,17 +231,19 @@
 	to_chat(user, span_warning("I twist [C]'s [parse_zone(sublimb_grabbed)].[C.next_attack_msg.Join()]"))
 	C.next_attack_msg.Cut()
 	log_combat(user, C, "limbtwisted [sublimb_grabbed] ")
+	wrestler.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.5))
 
 /obj/item/grabbing/proc/twistitemlimb(mob/living/user) //implies limb_grabbed and sublimb are things
 	var/mob/living/M = grabbed
 	var/damage = rand(5,10)
 	var/obj/item/I = sublimb_grabbed
+	var/mob/living/wrestler = user
 	playsound(M.loc, "genblunt", 100, FALSE, -1)
 	M.apply_damage(damage, BRUTE, limb_grabbed)
 	M.visible_message(span_danger("[user] twists [I] in [M]'s wound!"), \
 					span_userdanger("[user] twists [I] in my wound!"), span_hear("I hear a sickening sound of pugilism!"), COMBAT_MESSAGE_RANGE)
 	log_combat(user, M, "itemtwisted [sublimb_grabbed] ")
-	user.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.2))
+	wrestler.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.5))
 
 /obj/item/grabbing/proc/removeembeddeditem(mob/living/user) //implies limb_grabbed and sublimb are things
 	var/mob/living/M = grabbed
@@ -332,6 +336,7 @@
 	var/mob/living/carbon/C = grabbed
 	var/armor_block = C.run_armor_check(limb_grabbed, d_type)
 	var/damage = user.get_punch_dmg()
+	var/mob/living/wrestler = user
 	C.next_attack_msg.Cut()
 	if(C.apply_damage(damage, BRUTE, limb_grabbed, armor_block))
 		limb_grabbed.bodypart_attacked_by(BCLASS_BLUNT, damage, user, sublimb_grabbed, crit_message = TRUE)
@@ -343,7 +348,7 @@
 	to_chat(user, span_warning("I smash [C]'s [limb_grabbed] against [A].[C.next_attack_msg.Join()]"))
 	C.next_attack_msg.Cut()
 	log_combat(user, C, "limbsmashed [limb_grabbed] ")
-	user.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.2))
+	wrestler.mind.add_sleep_experience(/datum/skill/combat/wrestling, (user.STAINT*0.2))
 
 /datum/intent/grab
 	unarmed = TRUE
